@@ -1,0 +1,17 @@
+services:
+
+  python-cientifico:
+
+    build: .
+
+    container_name: python-cientifico
+
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ./datos:/datos
+      - ./scripts:/trabajo/scripts
+      - ./ejemplos:/trabajo/ejemplos
+
+    working_dir: /trabajo
