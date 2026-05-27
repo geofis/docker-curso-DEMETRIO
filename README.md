@@ -1,6 +1,8 @@
 # Python científico con Docker
 
-Entorno reproducible para análisis científico con Python y las bibliotecas:
+Entorno reproducible para análisis científico con:
+
+## Python
 
 - NumPy
 - Pandas
@@ -8,6 +10,16 @@ Entorno reproducible para análisis científico con Python y las bibliotecas:
 - SciPy
 - xarray
 - NetCDF4
+
+## Octave
+
+- Octave
+- netcdf
+- statistics
+- io
+- parallel
+
+Compatible con scripts MATLAB simples y scripts diseñados para Octave.
 
 Compatible con:
 
@@ -157,9 +169,10 @@ Iniciar:
 El script:
 
 - detecta Docker Compose v1 o v2
+- construye la imagen si aún no existe
 - inicia el contenedor si está detenido
 - crea el contenedor si no existe
-- entra automáticamente a la terminal
+- inicia automáticamente Jupyter Notebook
 
 ---
 
@@ -177,15 +190,102 @@ Docker Compose v2:
 docker compose up -d
 ```
 
-Entrar al contenedor:
+---
+
+# Acceso a Jupyter Notebook
+
+Una vez iniciado el entorno:
+
+Linux:
+
+```bash
+./scripts/iniciar.sh
+```
+
+Windows:
+
+Docker Compose v1:
 
 ```powershell
-docker exec -it python-cientifico bash
+docker-compose up -d
+```
+
+Docker Compose v2:
+
+```powershell
+docker compose up -d
+```
+
+Abrir el navegador en:
+
+```text
+http://localhost:8888
+```
+
+Si el contenedor se ejecuta en otra máquina:
+
+```text
+http://IP_DEL_SERVIDOR:8888
 ```
 
 ---
 
-# Verificar instalación
+## Directorios visibles desde Jupyter
+
+Dentro de Jupyter aparecerán:
+
+```text
+/trabajo
+```
+
+Contiene:
+
+```text
+Dockerfile
+README.md
+scripts/
+ejemplos/
+datos/
+```
+
+y:
+
+```text
+/datos
+```
+
+que apunta al directorio de datos externo configurado en:
+
+```yaml
+volumes:
+  - /media/usuario/datos:/datos
+```
+
+Ejemplo:
+
+Archivo real:
+
+```text
+/media/usuario/datos/clima/datos.csv
+```
+
+Disponible dentro de Jupyter como:
+
+```text
+/datos/clima/datos.csv
+```
+
+Uso:
+
+```python
+import pandas as pd
+
+df=pd.read_csv("/datos/clima/datos.csv")
+```
+
+---
+
+# Verificar entorno de Python
 
 Dentro del contenedor ejecutar:
 
@@ -207,6 +307,73 @@ Resultado esperado:
 ```text
 Todo OK
 ```
+
+
+---
+
+# Verificar entorno de Octave
+
+Dentro del contenedor ejecutar:
+
+```bash
+octave --version
+```
+
+Para listar paquetes instalados:
+
+```bash
+octave --eval "pkg list"
+```
+
+Resultado esperado:
+
+```text
+Package Name | Version
+
+io
+netcdf
+parallel
+statistics
+```
+
+---
+
+# Ejecutar scripts MATLAB / Octave
+
+El entorno incluye GNU Octave, compatible con muchos scripts `.m`.
+
+Ejecutar un script:
+
+```bash
+octave archivo.m
+```
+
+o:
+
+```bash
+octave --eval "run('archivo.m')"
+```
+
+Ejemplo:
+
+```bash
+octave --eval "run('/datos/modelos/mi_script.m')"
+```
+
+---
+
+## Compatibilidad
+
+Funciona especialmente bien con:
+
+- operaciones matriciales
+- estadísticas
+- análisis numérico
+- NetCDF
+- procesamiento de datos
+- scripts diseñados específicamente para Octave
+
+Algunas funciones propietarias de MATLAB pueden no existir en Octave y requerir modificaciones.
 
 ---
 
@@ -274,7 +441,7 @@ o en Linux puede modificarse el volumen para apuntar a otro disco, por ejemplo:
 
 ```yaml
 volumes:
-  - /media/jr/datos:/datos
+  - /media/usuario/datos:/datos
 ```
 
 Dentro del contenedor aparecerán como:
@@ -288,7 +455,7 @@ Ejemplo:
 Archivo real:
 
 ```text
-/media/jr/datos/clima/archivo.csv
+/media/usuario/datos/clima/archivo.csv
 ```
 
 Dentro del contenedor:

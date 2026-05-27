@@ -7,6 +7,58 @@ services:
 
     build: .
 
+    stdin_open: true
+    tty: true
+
+    ports:
+      - "8888:8888"
+
+    volumes:
+      - ./trabajo:/trabajo
+      - ./datos:/datos
+
+    working_dir: /trabajo
+
+    command: >
+      jupyter notebook
+      --ip=0.0.0.0
+      --port=8888
+      --allow-root
+      --no-browser
+      --NotebookApp.token=''
+      --NotebookApp.password=''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+services:
+
+  python-cientifico:
+
+    image: python-cientifico
+    container_name: python-cientifico
+
+    build: .
+
     container_name: python-cientifico
 
     stdin_open: true
