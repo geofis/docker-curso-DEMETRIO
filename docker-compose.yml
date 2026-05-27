@@ -2,6 +2,9 @@ services:
 
   python-cientifico:
 
+    image: python-cientifico
+    container_name: python-cientifico
+
     build: .
 
     container_name: python-cientifico

@@ -100,3 +100,7 @@ Ejemplo:
 ```python
 df=pd.read_csv("/datos/archivo.csv")
 ```
+
+# Datos en Drive
+
+[https://drive.google.com/drive/folders/1Uum3oaP0UcxXvS-uw_W5eZsps26u_bzY](https://drive.google.com/drive/folders/1Uum3oaP0UcxXvS-uw_W5eZsps26u_bzY)
